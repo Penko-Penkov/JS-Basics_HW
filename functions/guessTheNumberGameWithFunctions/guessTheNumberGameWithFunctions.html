@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number Game</title>
+</head>
+<body>
+    <script>
+        function chooseDifficulty() {
+            let difficulty = prompt("Изберете трудност! Easy (за числата от 1 до 10), Normal (1-50) или Hard (1-100)");
+            let maxNumber;
+
+            switch (difficulty.toLowerCase()) {
+                case "easy":
+                    maxNumber = 10;
+                    break;
+                case "normal":
+                    maxNumber = 50;
+                    break;
+                case "hard":
+                    maxNumber = 100;
+                    break;
+                default:
+                    alert("Невалидна трудност! Автоматично е избрана трудност Easy...");
+                    maxNumber = 10;
+                    break;
+            }
+
+            return maxNumber;
+        }
+
+        function generateRandomNumber(maxNumber) {
+            return Math.floor(Math.random() * maxNumber) + 1;
+        }
+
+        function validateGuess(userGuess, maxNumber) {
+            return !isNaN(userGuess) && userGuess >= 1 && userGuess <= maxNumber;
+        }
+
+        function playGame(maxNumber) {
+            let randomNumber = generateRandomNumber(maxNumber);
+            let userGuess = null;
+            let userTries = 0;
+            const maxTries = 2;
+
+            while (userGuess !== randomNumber) {
+                userGuess = parseInt(prompt(`Познайте числото между 1 и ${maxNumber}:`));
+
+                if (!validateGuess(userGuess, maxNumber)) {
+                    alert(`Моля въведете валидно число между 1 и ${maxNumber}!`);
+                    continue;
+                }
+
+                userTries++;
+
+                if (userGuess > randomNumber) {
+                    alert("Твърде висока стойност! Опитайте отново.");
+                } else if (userGuess < randomNumber) {
+                    alert("Твърде ниска стойност! Опитайте отново.");
+                } else if (userGuess === randomNumber) {
+                    alert(`Поздравления! Познахте моето число!`);
+                    break;
+                }
+
+                if (userTries === maxTries && userGuess !== randomNumber) {
+                    alert(`Играта свърши! Числото беше ${randomNumber}.`);
+                    break;
+                }
+            }
+
+            alert(`Общият брой опити е ${userTries}`);
+        }
+
+        // Start the game
+        const maxNumber = chooseDifficulty();
+        playGame(maxNumber);
+    </script>
+</body>
+</html>
